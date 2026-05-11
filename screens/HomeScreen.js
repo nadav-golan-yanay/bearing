@@ -31,20 +31,25 @@ export default function HomeScreen({ appOwner, appVersion }) {
   useEffect(() => {
     let subscription;
     (async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Location permission denied.');
-        return;
-      }
-      subscription = await Location.watchPositionAsync(
-        { accuracy: Location.Accuracy.High, timeInterval: 2000, distanceInterval: 2 },
-        (loc) => {
-          setMyLocation({
-            latitude: loc.coords.latitude,
-            longitude: loc.coords.longitude,
-          });
+      try {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+          setErrorMsg('Location permission denied. Please grant permission in settings.');
+          return;
         }
-      );
+        subscription = await Location.watchPositionAsync(
+          { accuracy: Location.Accuracy.High, timeInterval: 2000, distanceInterval: 2 },
+          (loc) => {
+            setMyLocation({
+              latitude: loc.coords.latitude,
+              longitude: loc.coords.longitude,
+            });
+          }
+        );
+      } catch (error) {
+        console.error('Location error:', error);
+        setErrorMsg('Unable to access location. Check permissions.');
+      }
     })();
     return () => subscription?.remove();
   }, []);
