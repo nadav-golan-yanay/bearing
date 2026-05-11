@@ -2,7 +2,7 @@
   "expo": {
     "name": "Bearing",
     "slug": "bearing",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -21,7 +21,7 @@
       }
     },
     "android": {
-      "versionCode": 3,
+      "versionCode": 4,
       "package": "com.nadavgolanyanay.bearing",
       "config": {
         "googleMaps": {

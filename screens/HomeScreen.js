@@ -12,7 +12,7 @@ import {
   ScrollView,
   Animated,
 } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, UrlTile } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { distanceMetres, bearingDegrees, bearingLabel, formatDistance } from '../utils/geo';
 
@@ -134,9 +134,16 @@ export default function HomeScreen({ appOwner, appVersion }) {
       <MapView
         style={styles.map}
         region={mapRegion}
+        mapType={Platform.OS === 'android' ? 'none' : 'standard'}
         showsUserLocation
         onPress={handleMapPress}
       >
+        {Platform.OS === 'android' ? (
+          <UrlTile
+            urlTemplate="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+            maximumZ={19}
+          />
+        ) : null}
         {target && (
           <Marker coordinate={target} pinColor="#e74c3c" title="Target" />
         )}
