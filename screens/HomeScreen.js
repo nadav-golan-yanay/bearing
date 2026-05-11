@@ -12,7 +12,7 @@ import {
   ScrollView,
   Animated,
 } from 'react-native';
-import MapView, { Marker, UrlTile } from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { distanceMetres, bearingDegrees, bearingLabel, formatDistance } from '../utils/geo';
 
@@ -22,6 +22,7 @@ export default function HomeScreen({ appOwner, appVersion }) {
   const [latInput, setLatInput] = useState('');
   const [lonInput, setLonInput] = useState('');
   const [errorMsg, setErrorMsg] = useState(null);
+  const [mapLoaded, setMapLoaded] = useState(false);
 
   // Animate the arrow
   const arrowAnim = useRef(new Animated.Value(0)).current;
@@ -134,16 +135,18 @@ export default function HomeScreen({ appOwner, appVersion }) {
       <MapView
         style={styles.map}
         region={mapRegion}
-        mapType={Platform.OS === 'android' ? 'none' : 'standard'}
+        mapType="standard"
         showsUserLocation
         onPress={handleMapPress}
+        onMapReady={() => {
+          console.log('Map ready');
+          setMapLoaded(true);
+        }}
+        onError={(e) => {
+          console.log('Map error:', e);
+          setErrorMsg('Map tiles failed to load.');
+        }}
       >
-        {Platform.OS === 'android' ? (
-          <UrlTile
-            urlTemplate="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-            maximumZ={19}
-          />
-        ) : null}
         {target && (
           <Marker coordinate={target} pinColor="#e74c3c" title="Target" />
         )}
