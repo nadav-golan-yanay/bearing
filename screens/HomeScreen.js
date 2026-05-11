@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  Linking,
   Platform,
   KeyboardAvoidingView,
   ScrollView,
@@ -15,7 +16,7 @@ import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { distanceMetres, bearingDegrees, bearingLabel, formatDistance } from '../utils/geo';
 
-export default function HomeScreen() {
+export default function HomeScreen({ appOwner, appVersion }) {
   const [myLocation, setMyLocation] = useState(null);
   const [target, setTarget] = useState(null);
   const [latInput, setLatInput] = useState('');
@@ -84,6 +85,13 @@ export default function HomeScreen() {
     setTarget(null);
     setLatInput('');
     setLonInput('');
+  };
+
+  const openGithub = () => {
+    if (!appOwner?.github) return;
+    Linking.openURL(appOwner.github).catch(() => {
+      Alert.alert('Link error', 'Could not open GitHub link.');
+    });
   };
 
   // Computed values
@@ -185,6 +193,20 @@ export default function HomeScreen() {
             </Text>
           </View>
         )}
+
+        <View style={styles.aboutCard}>
+          <Text style={styles.aboutTitle}>About</Text>
+          <Text style={styles.aboutLine}>Version: {appVersion || '1.0.0'}</Text>
+          {appOwner?.name ? <Text style={styles.aboutLine}>By: {appOwner.name}</Text> : null}
+          {appOwner?.title ? <Text style={styles.aboutLine}>Role: {appOwner.title}</Text> : null}
+          {appOwner?.contact ? <Text style={styles.aboutLine}>Contact: {appOwner.contact}</Text> : null}
+          {appOwner?.github ? (
+            <TouchableOpacity onPress={openGithub}>
+              <Text style={styles.aboutLink}>GitHub: {appOwner.github}</Text>
+            </TouchableOpacity>
+          ) : null}
+          {appOwner?.thanks ? <Text style={styles.aboutThanks}>{appOwner.thanks}</Text> : null}
+        </View>
       </ScrollView>
     </KeyboardAvoidingView>
   );
@@ -225,4 +247,34 @@ const styles = StyleSheet.create({
   resultLabel: { color: '#aaa', fontSize: 13, marginTop: 8 },
   resultValue: { color: '#fff', fontSize: 28, fontWeight: '700' },
   coords: { color: '#666', fontSize: 11, marginTop: 4 },
+  aboutCard: {
+    marginTop: 6,
+    marginBottom: 14,
+    borderRadius: 10,
+    backgroundColor: '#0f3460',
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+  },
+  aboutTitle: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '700',
+    marginBottom: 8,
+  },
+  aboutLine: {
+    color: '#d6deff',
+    fontSize: 12,
+    marginBottom: 2,
+  },
+  aboutLink: {
+    color: '#7dd3fc',
+    fontSize: 12,
+    marginBottom: 2,
+    textDecorationLine: 'underline',
+  },
+  aboutThanks: {
+    color: '#9fb1ff',
+    fontSize: 11,
+    marginTop: 8,
+  },
 });

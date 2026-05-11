@@ -1,8 +1,8 @@
 {
   "expo": {
     "name": "Bearing",
-    "slug": "Bearing",
-    "version": "1.0.0",
+    "slug": "bearing",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -14,13 +14,19 @@
     },
     "ios": {
       "supportsTablet": true,
+      "buildNumber": "1",
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Bearing Finder needs your location to compute distance and bearing to your target.",
         "NSLocationAlwaysUsageDescription": "Bearing Finder needs your location to compute distance and bearing to your target."
       }
     },
     "android": {
-      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"],
+      "versionCode": 1,
+      "package": "com.nadavgolanyanay.bearing",
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -29,6 +35,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "b3483420-08cf-496f-8f17-11e9a3297786"
+      }
     }
   }
 }
