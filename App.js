@@ -15,7 +15,7 @@ const APP_OWNER = {
   thanks: 'Thanks to VSCode and Copilot for making development a breeze!',
 };
 
-const APP_VERSION = '1.0.2';
+const APP_VERSION = '1.0.3';
 
 export default function App() {
   const [isBooting, setIsBooting] = useState(true);
